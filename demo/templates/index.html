@@ -18,15 +18,15 @@
             <input type="number" name="day" min="1" max="31" required>
         </div>
         <div id="form-input-container">
-            <label for="dep_time">Departure Time:</label>
+            <label for="dep_time">Departure Time (24hr time [hhmm]):</label>
             <input type="number" name="dep_time" min="0" max="2400" required>
         </div>
         <div id="form-input-container">
-            <label for="dep_time">Departure Delay:</label>
-            <input type="number" name="dep_delay" min="0" max="2400" required>
+            <label for="dep_time">Departure Delay (min):</label>
+            <input type="number" name="dep_delay" required>
         </div>
         <div id="form-input-container">
-            <label for="arr_time">Arrival Time:</label>
+            <label for="arr_time">Arrival Time (24hr time [hhmm]):</label>
             <input type="number" name="arr_time"  min="0" max="2400" required>
         </div>
         <div id="form-input-container">
@@ -170,11 +170,11 @@
             </select>
         </div>
         <div id="form-input-container">
-            <label for="air_time">Air time:</label>
+            <label for="air_time">Air time (min):</label>
             <input type="number" name="air_time" min="0" max="2400" required>
         </div>
         <div id="form-input-container">
-            <label for="distance">Distance:</label>
+            <label for="distance">Distance (miles):</label>
             <input type="number" name="distance" min="0" max="9999" required>
         </div>
 
@@ -191,9 +191,9 @@
 </div>
 <div id="result">
     {% if is_delayed == 1 %}
-    <h1 style="color: red;">Flight will be delayed!</h1>
+    <h1 style="color: red;">Flight will be delayed by {{delay_time}} minutes!</h1>
     {% elif is_delayed == 0 %}
-        <h1 style="color: greenyellow;">Flight will not be delayed!</h1>
+        <h1 style="color: greenyellow;">Flight will {{delay_time}} minutes early!</h1>
     {% else %}
         <h1></h1>
     {% endif %}

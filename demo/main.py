@@ -24,11 +24,17 @@ def my_form_post():
         with open('./models/encoder_dest.pkl', 'rb') as f:
             encoder_dest = pickle.load(f)
 
-        with open('./models/scaler.pkl', 'rb') as f:
-            scaler = pickle.load(f)
+        with open('./models/scalerX.pkl', 'rb') as f:
+            scaler_X = pickle.load(f)
 
-        with open('./models/model.pkl', 'rb') as f:
-            model = pickle.load(f)
+        with open('./models/scalerY.pkl', 'rb') as f:
+            scaler_y = pickle.load(f)
+
+        with open('./models/poly.pkl', 'rb') as f:
+            poly = pickle.load(f)
+        
+        with open('./models/polyReg.pkl', 'rb') as f:
+            polyReg = pickle.load(f)
 
         # Get input from UI
 
@@ -49,7 +55,17 @@ def my_form_post():
         # Create, scale, and predict
 
         input_x = [month, day, dep_time, dep_delay, arr_time, carrier, flight, origin, dest, air_time, distance, hour, minute]
-        scaled_x = scaler.transform([input_x])
-        result = model.predict(scaled_x)[0]
+        scaled_x = scaler_X.transform([input_x])
+        scaled_x_poly = poly.transform(scaled_x)
+        result = polyReg.predict(scaled_x_poly)[0][0]
+        result = scaler_y.inverse_transform(result.reshape(-1, 1))[0][0]
+        result = round(result, 4)
 
-        return render_template('index.html', is_delayed=result)
+        if(result > 0):
+            delayed = 1
+        else:
+            delayed = 0
+
+        result = abs(result)
+
+        return render_template('index.html', is_delayed=delayed, delay_time=result)
